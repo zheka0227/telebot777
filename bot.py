@@ -8,10 +8,10 @@ TOKEN = '5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0'
 bot = telebot.TeleBot('5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0')
 server = Flask(__name__)
 import psycopg2
-dbname='telegram'
-password='321'
-host='localhost'
-user='postgres'
+dbname='dcvdjbn46k5v5s'
+password='25c5bf62a1eac2e9bf972d77ec63cc97ae161d3f1a9efb80d0e1d5a5db0334b1'
+host='ec2-34-250-19-18.eu-west-1.compute.amazonaws.com'
+user='zuxpckwxhhzhtl'
 
 
 # Команда start
@@ -69,7 +69,7 @@ def updateActions(userId, message_text):
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     userId = message.from_user.id
-    #updateActions(userId, message.text)
+    updateActions(userId, message.text)
     if message.text == "Профиль":
         first_name = isNone(message.from_user.first_name)
         last_name = isNone(message.from_user.last_name)
