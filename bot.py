@@ -3,8 +3,10 @@ PORT = int(os.environ.get('PORT', 5000))
 from datetime import datetime
 import telebot
 from telebot import types
+from flask import Flask, request
 TOKEN = '5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0'
 bot = telebot.TeleBot('5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0')
+server = Flask(__name__)
 import psycopg2
 dbname='telegram'
 password='321'
@@ -90,5 +92,20 @@ def get_text_messages(message):
         bot.send_message(message.chat.id, "{0}\n{1}".format(firstWord, lastWord))
 
 #bot.polling(none_stop=True, interval=0)
-#bot.start_webhook(listen="0.0.0.0", port=int(PORT), url_path=TOKEN) 
-bot.set_webhook(' https://telbot777.herokuapp.com/' + TOKEN)
+#bot.set_webhook(' https://telbot777.herokuapp.com/' + TOKEN)
+@server.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+    json_string = request.get_data().decode('utf-8')
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return "!", 200
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://telbot777.herokuapp.com/' + TOKEN)
+    return "!", 200
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
