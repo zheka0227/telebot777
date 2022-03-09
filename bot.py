@@ -1,11 +1,10 @@
 import os 
-PORT = int(os.environ.get('PORT', 5000))
 from datetime import datetime
 import telebot
 from telebot import types
 from flask import Flask, request
 TOKEN = '5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0'
-bot = telebot.TeleBot('5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0')
+bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
 import psycopg2
 dbname='dcvdjbn46k5v5s'
@@ -13,11 +12,8 @@ password='25c5bf62a1eac2e9bf972d77ec63cc97ae161d3f1a9efb80d0e1d5a5db0334b1'
 host='ec2-34-250-19-18.eu-west-1.compute.amazonaws.com'
 user='zuxpckwxhhzhtl'
 
-
-# Команда start
 @bot.message_handler(commands=["start"])
 def start(message, res=False):
-    # Добавляем две кнопки
     markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1=types.KeyboardButton("Профиль")
     item2=types.KeyboardButton("Статистика")
@@ -28,8 +24,6 @@ def start(message, res=False):
     first_name = isNone(message.from_user.first_name)
     last_name = isNone(message.from_user.last_name)
     username = isNone(message.from_user.username)
-
-    #aboutMan = '{0}\n{1}\n{2}\n{3}'.format(userId, first_name, last_name, username)
 
     bot.send_message(message.chat.id, 'бот запущен', reply_markup=markup)
 
@@ -92,7 +86,7 @@ def get_text_messages(message):
         bot.send_message(message.chat.id, "{0}\n{1}".format(firstWord, lastWord))
 
 #bot.polling(none_stop=True, interval=0)
-#bot.set_webhook(' https://telbot777.herokuapp.com/' + TOKEN)
+
 @server.route('/' + TOKEN, methods=['POST'])
 def getMessage():
     json_string = request.get_data().decode('utf-8')
