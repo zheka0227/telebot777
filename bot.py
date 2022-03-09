@@ -69,7 +69,7 @@ def updateActions(userId, message_text):
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     userId = message.from_user.id
-    updateActions(userId, message.text)
+    #updateActions(userId, message.text)
     if message.text == "Профиль":
         first_name = isNone(message.from_user.first_name)
         last_name = isNone(message.from_user.last_name)
