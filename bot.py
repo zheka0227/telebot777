@@ -1,7 +1,6 @@
 import os 
 from datetime import datetime
 import telebot
-from telebot import types
 from flask import Flask, request
 TOKEN = '5224678135:AAFwehLAgijGzT3l7Zy60nSjTuc7xIKr1O0'
 bot = telebot.TeleBot(TOKEN)
@@ -14,24 +13,19 @@ user='zuxpckwxhhzhtl'
 
 @bot.message_handler(commands=["start"])
 def start(message, res=False):
-    markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1=types.KeyboardButton("Профиль")
-    item2=types.KeyboardButton("Статистика")
+    markup=telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1=telebot.types.KeyboardButton("Профиль")
+    item2=telebot.types.KeyboardButton("Статистика")
     markup.add(item1)
     markup.add(item2)
-
     userId = message.from_user.id
     first_name = isNone(message.from_user.first_name)
     last_name = isNone(message.from_user.last_name)
     username = isNone(message.from_user.username)
-
     bot.send_message(message.chat.id, 'бот запущен', reply_markup=markup)
-
     updateActions(userId, message.text)
-
     conn = psycopg2.connect(dbname=dbname, password=password, host=host, user=user)
     cursor = conn.cursor()
-
     cursor.execute("SELECT * FROM users WHERE userid={0}".format(userId))
     records = cursor.fetchall()
     if len(records)==0:
@@ -52,9 +46,7 @@ def isNone(text, replace=''):
 def updateActions(userId, message_text):
     conn = psycopg2.connect(dbname=dbname, password=password, host=host, user=user)
     cursor = conn.cursor()
-
     cursor.execute("INSERT INTO actions (userid, command, date) VALUES ({0}, '{1}', '{2}')".format(userId, message_text, datetime.now()))
-
     conn.commit()
     cursor.close()
     conn.close()
